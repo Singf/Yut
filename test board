@@ -1,0 +1,63 @@
+class GameBoard:
+    def __init__(self):
+        self.board = [[0] * 6 for _ in range(6)]
+        self.current_position = (6, 1)
+
+    def display_board(self):
+        for row in self.board:
+            print(row)
+
+    def update_position(self, new_position):
+        self.current_position = new_position
+
+    def play_game(self):
+        game_over = False
+        player_turn = 1
+
+        while not game_over:
+            print("Player", player_turn, "'s turn.")
+            self.display_board()
+
+            # Get input for the next move
+            direction = input("Enter direction (left, right, up, down): ")
+            new_position = self.calculate_new_position(direction)
+
+            # Check if the move is valid
+            if self.is_valid_move(new_position):
+                self.update_position(new_position)
+            else:
+                print("Invalid move! Try again.")
+
+            # Check if the game is over
+            if self.check_game_over():
+                game_over = True
+                print("Game over!")
+
+            # Switch to the next player's turn
+            player_turn = 2 if player_turn == 1 else 1
+
+    def calculate_new_position(self, direction):
+        x, y = self.current_position
+        if direction == "left":
+            return x - 1, y
+        elif direction == "right":
+            return x + 1, y
+        elif direction == "up":
+            return x, y - 1
+        elif direction == "down":
+            return x, y + 1
+
+    def is_valid_move(self, position):
+        x, y = position
+        if 1 <= x <= 6 and 1 <= y <= 6:
+            return True
+        return False
+
+    def check_game_over(self):
+        x, y = self.current_position
+        return x == 1 and y == 6
+
+
+# Create a game instance and start playing
+game = GameBoard()
+game.play_game()
